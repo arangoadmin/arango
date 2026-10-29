@@ -20,15 +20,12 @@ export default function Footer({ currentSlide, onSelectSlide }) {
           <span className="caption-name">{activeSlide.caption?.[lang] || activeSlide.caption?.pt || activeSlide.caption}</span>
         </div>
 
-        <div className="indicators-track" aria-label="Selecionar fotografia">
+        <div className="indicators-track" role="presentation">
           {slides.map((slide, idx) => (
-            <button
+            <span
               key={slide.id}
-              type="button"
               className={`indicator-bar ${idx === currentSlide ? 'active' : ''}`}
-              aria-label={`Fotografia ${idx + 1}`}
-              aria-current={idx === currentSlide ? 'true' : undefined}
-              onClick={() => onSelectSlide(idx)}
+              aria-hidden="true"
             />
           ))}
         </div>
