@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Countdown from '../components/Countdown'
+import WorksViewer from '../components/WorksViewer'
 import { slides } from '../data/slides'
 
 export default function ComingSoon() {
@@ -44,8 +45,10 @@ export default function ComingSoon() {
           </h1>
 
           <p className="hero-description">
-            Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região.
+            Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região e no exterior.
           </p>
+
+          <WorksViewer />
 
           <Countdown />
         </main>
