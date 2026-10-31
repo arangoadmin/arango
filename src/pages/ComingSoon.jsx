@@ -36,17 +36,19 @@ export default function ComingSoon() {
         <Header />
 
         <main className="hero-content">
-          <div className="section-badge">
-            <span className="badge-text">Construção Civil & Obras Públicas</span>
+          <div className="hero-header-group">
+            <div className="section-badge">
+              <span className="badge-text">Construção Civil & Obras Públicas</span>
+            </div>
+
+            <h1 className="hero-title">
+              O novo website oficial<br />está a chegar.
+            </h1>
+
+            <p className="hero-description">
+              Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região e no exterior.
+            </p>
           </div>
-
-          <h1 className="hero-title">
-            O novo website oficial<br />está a chegar.
-          </h1>
-
-          <p className="hero-description">
-            Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região e no exterior.
-          </p>
 
           <WorksViewer />
 
