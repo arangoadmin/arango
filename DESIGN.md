@@ -27,7 +27,7 @@ The coming-soon page pairs construction photography with a dark industrial surfa
 
 ## Canonical components
 
-- `Header`: brand identity and contact details.
+- `Header`: brand identity and contact buttons. At widths up to 800px, show phone and envelope icons side by side with 44px touch targets and accessible names. Wider screens show the phone number and email address. Each button opens a compact native dialog containing the corresponding selectable contact detail, without opening another application. Close with the close button, Escape or a click outside; restore focus to the trigger.
 - `WorksViewer`: region selectors, a project photograph, caption, horizontally scrolling thumbnails and enlarged photograph dialog.
 - `Countdown`: launch information and four time units.
 - `Footer`: company identity, location and background slideshow indicators.
