@@ -2,18 +2,45 @@ import { useState, useEffect, useRef } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { featuredWorks } from '../data/featuredWorks'
 
-const SECTION_KEYS = ['hospital', 'laguaira', 'savoy']
+const SECTION_KEYS = ['madeira', 'portugal', 'venezuela']
+const MAX_VISIBLE_THUMBS = 5
 
 export default function WorksViewer() {
   const { lang } = useLanguage()
-  const [activeSection, setActiveSection] = useState('hospital')
+  const [activeSection, setActiveSection] = useState('madeira')
   const [photoIndex, setPhotoIndex] = useState(0)
+  const [thumbStartIndex, setThumbStartIndex] = useState(0)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const touchStartRef = useRef(null)
 
-  const currentSectionData = featuredWorks[activeSection] || featuredWorks.hospital
+  const currentSectionData = featuredWorks[activeSection] || featuredWorks.madeira
   const works = currentSectionData.works
   const currentWork = works[photoIndex] || works[0]
+
+  // Keep thumbStartIndex visible when photoIndex changes
+  useEffect(() => {
+    if (works.length <= MAX_VISIBLE_THUMBS) {
+      setThumbStartIndex(0)
+      return
+    }
+    setThumbStartIndex((prev) => {
+      if (photoIndex < prev) {
+        return photoIndex
+      }
+      if (photoIndex >= prev + MAX_VISIBLE_THUMBS) {
+        return photoIndex - MAX_VISIBLE_THUMBS + 1
+      }
+      return prev
+    })
+  }, [photoIndex, works.length])
+
+  const handlePrevThumb = () => {
+    setThumbStartIndex((prev) => Math.max(0, prev - 1))
+  }
+
+  const handleNextThumb = () => {
+    setThumbStartIndex((prev) => Math.min(works.length - MAX_VISIBLE_THUMBS, prev + 1))
+  }
 
   const handlePrevPhoto = () => {
     if (works.length <= 1) return
@@ -72,17 +99,25 @@ export default function WorksViewer() {
   const handleSelectSection = (key) => {
     setActiveSection(key)
     setPhotoIndex(0)
+    setThumbStartIndex(0)
   }
+
+  const visibleWorks = works
+    .slice(thumbStartIndex, thumbStartIndex + MAX_VISIBLE_THUMBS)
+    .map((w, i) => ({
+      work: w,
+      actualIndex: thumbStartIndex + i
+    }))
 
   return (
     <>
-      <section className="works-viewer" aria-label="Obras de referência">
+      <section className="works-viewer" aria-label={lang === 'en' ? 'Featured projects' : 'Obras de referência'}>
         {/* Botões das três secções sem contadores numéricos */}
         <div className="viewer-header">
           <span className="viewer-kicker">
             {lang === 'en' ? 'Featured Projects' : 'Obras de Referência'}
           </span>
-          <div className="section-tabs" role="tablist" aria-label="Secções de obras">
+          <div className="section-tabs" role="tablist" aria-label={lang === 'en' ? 'Project sections' : 'Secções de obras'}>
             {SECTION_KEYS.map((key) => {
               const section = featuredWorks[key]
               const isActive = key === activeSection
@@ -136,7 +171,10 @@ export default function WorksViewer() {
               <span>{lang === 'en' ? 'Enlarge' : 'Ver maior'}</span>
             </span>
             {works.length > 1 && (
-              <span className="stage-counter" aria-label={`Fotografia ${photoIndex + 1} de ${works.length}`}>
+              <span
+                className="stage-counter"
+                aria-label={lang === 'en' ? `Photo ${photoIndex + 1} of ${works.length}` : `Fotografia ${photoIndex + 1} de ${works.length}`}
+              >
                 {photoIndex + 1} / {works.length}
               </span>
             )}
@@ -150,9 +188,6 @@ export default function WorksViewer() {
               <h3 className="caption-title">
                 {currentWork.title[lang] || currentWork.title.pt}
               </h3>
-              <p className="caption-description">
-                {currentWork.caption[lang] || currentWork.caption.pt}
-              </p>
             </div>
 
             {works.length > 1 && (
@@ -161,19 +196,33 @@ export default function WorksViewer() {
                   {lang === 'en' ? 'Photographs:' : 'Fotografias:'}
                 </span>
                 <div className="thumbs-row">
-                  <div className="thumbs-list" role="tablist" aria-label="Fotografias da obra">
-                    {works.map((w, idx) => (
+                  {works.length > MAX_VISIBLE_THUMBS && (
+                    <button
+                      type="button"
+                      className="thumb-nav-arrow prev"
+                      aria-label={lang === 'en' ? 'Previous photographs' : 'Fotografias anteriores'}
+                      onClick={handlePrevThumb}
+                      disabled={thumbStartIndex === 0}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                    </button>
+                  )}
+
+                  <div className="thumbs-list" role="tablist" aria-label={lang === 'en' ? 'Project photographs' : 'Fotografias da obra'}>
+                    {visibleWorks.map(({ work, actualIndex }) => (
                       <button
-                        key={w.id}
+                        key={work.id}
                         type="button"
                         role="tab"
-                        aria-selected={idx === photoIndex}
-                        aria-label={`${w.title[lang] || w.title.pt} (${idx + 1})`}
-                        className={`thumb-btn ${idx === photoIndex ? 'active' : ''}`}
-                        onClick={() => setPhotoIndex(idx)}
+                        aria-selected={actualIndex === photoIndex}
+                        aria-label={`${work.title[lang] || work.title.pt} (${actualIndex + 1})`}
+                        className={`thumb-btn ${actualIndex === photoIndex ? 'active' : ''}`}
+                        onClick={() => setPhotoIndex(actualIndex)}
                       >
                         <img
-                          src={w.imageWebp || w.imageJpg}
+                          src={work.imageWebp || work.imageJpg}
                           alt=""
                           aria-hidden="true"
                           className="thumb-img"
@@ -181,6 +230,20 @@ export default function WorksViewer() {
                       </button>
                     ))}
                   </div>
+
+                  {works.length > MAX_VISIBLE_THUMBS && (
+                    <button
+                      type="button"
+                      className="thumb-nav-arrow next"
+                      aria-label={lang === 'en' ? 'Next photographs' : 'Fotografias seguintes'}
+                      onClick={handleNextThumb}
+                      disabled={thumbStartIndex >= works.length - MAX_VISIBLE_THUMBS}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -265,9 +328,6 @@ export default function WorksViewer() {
               <h4 className="lightbox-title">
                 {currentWork.title[lang] || currentWork.title.pt}
               </h4>
-              <p className="lightbox-description">
-                {currentWork.caption[lang] || currentWork.caption.pt}
-              </p>
             </div>
           </div>
         </div>
