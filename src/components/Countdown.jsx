@@ -86,6 +86,7 @@ export default function Countdown() {
       <div className="countdown-caption">
         <span className="caption-lead">Lançamento</span>
         <span className="caption-date">25 de fevereiro de 2027 (25.º Aniversário da Arango)</span>
+        <time className="caption-date-short" dateTime="2027-02-25">25/02/2027</time>
       </div>
 
       <div className="countdown-grid">

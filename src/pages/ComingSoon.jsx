@@ -42,11 +42,11 @@ export default function ComingSoon() {
             </div>
 
             <h1 className="hero-title">
-              O novo website oficial<br />está a chegar.
+              O novo website oficial<br />{' '}está a chegar.
             </h1>
 
             <p className="hero-description">
-              Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região e no exterior.
+              Mais de duas décadas a produzir, moldar e armar varão de aço para obras de referência na Região e Portugal Continental.
             </p>
           </div>
 
