@@ -7,6 +7,23 @@ export const featuredWorks = {
     },
     works: [
       {
+        id: 'hospital-vista-geral',
+        imageWebp: '/images/obra-hospital-madeira-vista-geral.webp',
+        imageJpg: '/images/obra-hospital-madeira-vista-geral.jpg',
+        title: {
+          pt: 'Hospital Central e Universitário da Madeira',
+          en: 'Central and University Hospital of Madeira'
+        },
+        location: {
+          pt: 'Santa Rita, Funchal',
+          en: 'Santa Rita, Funchal'
+        },
+        caption: {
+          pt: 'Vista geral da estrutura de betão armado do complexo hospitalar.',
+          en: 'Overview of the reinforced concrete structure of the hospital complex.'
+        }
+      },
+      {
         id: 'hospital-1',
         imageWebp: '/images/obra-hospital-madeira.webp',
         imageJpg: '/images/obra-hospital-madeira.jpg',
@@ -41,20 +58,20 @@ export const featuredWorks = {
         }
       },
       {
-        id: 'savoy-2',
-        imageWebp: '/images/obra-savoy-palace-aerea.webp',
-        imageJpg: '/images/obra-savoy-palace-aerea.jpg',
+        id: 'tunel-pestana-junior-cofragem',
+        imageWebp: '/images/obra-tunel-pestana-junior-cofragem.webp',
+        imageJpg: '/images/obra-tunel-pestana-junior-cofragem.jpg',
         title: {
-          pt: 'Savoy Palace - Vista Aérea da Estrutura',
-          en: 'Savoy Palace - Aerial Structural View'
+          pt: 'Túnel Pestana Júnior - Estrutura em Construção',
+          en: 'Pestana Júnior Tunnel - Structure under Construction'
         },
         location: {
           pt: 'Funchal, Madeira',
           en: 'Funchal, Madeira'
         },
         caption: {
-          pt: 'Execução das lajes maciças, praça central e galerias técnicas em betão armado.',
-          en: 'Execution of thick slabs, central plaza, and technical galleries in reinforced concrete.'
+          pt: 'Execução da estrutura de betão armado junto à encosta.',
+          en: 'Construction of the reinforced concrete structure alongside the hillside.'
         }
       },
       {
